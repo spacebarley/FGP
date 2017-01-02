@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!-- Added a LinearLayout to enclose the EmptyRecyclerView and
+     the empty view -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Replaced android.support.v7.widget.RecyclerView with the
+         new EmptyRecyclerView -->
+    <project2.galaxy.EmptyRecyclerView
+        android:id="@+id/contacts_list_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Added an empty view which will be shown when the EmptyRecyclerView
+         is empty -->
+    <LinearLayout
+        android:id="@+id/contacts_list_empty_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:textAlignment="center">
+
+        <Button
+            android:id="@+id/get_contacts"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="폰의 연락처 가져오기"/>
+
+        <Button
+        android:id="@+id/button2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="페이스북 로그인"/>
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/info"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:textSize="18sp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:padding="16dp"
+            android:layout_gravity="center_horizontal"
+            android:text="보여드릴 수 있는 연락처가 없네요!\n위의 버튼을 눌러 폰의 연락처를 가져오세요."
+            />
+
+
+
+    </LinearLayout>
+
+</LinearLayout>
