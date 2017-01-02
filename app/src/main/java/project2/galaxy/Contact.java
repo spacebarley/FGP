@@ -4,7 +4,7 @@ package project2.galaxy;
  * Created by q on 2017-01-01.
  */
 
-public class Contact {
+    public class Contact {
     private String title;
     private String phone;
     private String name;
