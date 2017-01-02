@@ -31,11 +31,18 @@
             android:text="폰의 연락처 가져오기"/>
 
         <Button
-        android:id="@+id/button2"
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:text="페이스북 로그인"/>
+
+        <Button
+        android:id="@+id/button3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="페이스북 로그인"/>
+        android:text="페이스북 연락처 가져오기"/>
 
 
 

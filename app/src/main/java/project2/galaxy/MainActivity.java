@@ -19,15 +19,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
+import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -38,6 +41,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private TextView info;
+
+    private ArrayList<Friend> friendList = new ArrayList<>();
 
     // Creating Facebook CallbackManager Value
     public static CallbackManager callbackmanager;
@@ -53,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         findViewById(R.id.button2).setOnClickListener(m2ClickListener);
+
+        findViewById(R.id.button3).setOnClickListener(m3ClickListener);
 
 
 
@@ -82,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         callbackmanager = CallbackManager.Factory.create();
 
         // Set permissions
-        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email","user_photos","public_profile"));
+        LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("email","user_photos","public_profile", "user_friends"));
 
         LoginManager.getInstance().registerCallback(callbackmanager,
                 new FacebookCallback<LoginResult>() {
@@ -100,7 +107,6 @@ public class MainActivity extends AppCompatActivity {
                                         } else {
                                             System.out.println("Success");
                                             try {
-
                                                 String jsonresult = String.valueOf(json);
                                                 System.out.println("JSON Result"+jsonresult);
 
@@ -128,8 +134,11 @@ public class MainActivity extends AppCompatActivity {
                     public void onError(FacebookException error) {
                         Log.d("TAG_ERROR",error.toString());
                     }
-                });
+                }
+        );
     }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -151,6 +160,64 @@ public class MainActivity extends AppCompatActivity {
             onFblogin();
         }
     };
+
+    Button.OnClickListener m3ClickListener = new View.OnClickListener(){
+        public void onClick(View v){
+            new GraphRequest(
+                    AccessToken.getCurrentAccessToken(),
+                    "/me/taggable_friends",
+                    null,
+                    HttpMethod.GET,
+                    new GraphRequest.Callback() {
+                public void onCompleted(GraphResponse response) {
+                    if (response == null) {
+                        Log.d("what", "response null");
+                    } else {
+                        try {
+                            JSONObject object = response.getJSONObject();
+                            JSONArray friendJsonArray = object.getJSONArray("data");
+                            for (int i=0; i < friendJsonArray.length(); i++) {
+                                JSONObject jsonTemp = friendJsonArray.getJSONObject(i);
+                                Friend newFriend = new Friend(jsonTemp.getString("name"),
+                                        jsonTemp.getJSONObject("picture").getJSONObject("data").getString("url"),
+                                        jsonTemp.getJSONObject("picture").getJSONObject("data").getBoolean("is_silhouette"));
+                                friendList.add(newFriend);
+                                newFriend.printSelf();
+                            }
+                            Log.d("response", friendList.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+            ).executeAsync();
+
+        }
+    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     /**
      * Show the contacts in the ListView.
